@@ -1,0 +1,6 @@
+[submodule "WordPress"]
+	path = WordPress
+	url = https://github.com/WordPress/WordPress
+[submodule "jquery-wp-content"]
+	path = jquery-wp-content
+	url = https://github.com/jquery/jquery-wp-content

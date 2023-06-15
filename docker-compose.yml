@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  jquerysite:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jquerysite
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./WordPress:/var/www/html
+      # - ./jquery-wp-content:/var/www/html/jquery-wp-content
+    ports:
+      - "80:80"
+      - "443:443"
+  jquerydb:
+    image: mysql
+    container_name: jquerydb
+    restart: always
+    env_file:
+      - mysql.env
+    ports:
+      - "3306:3306"
