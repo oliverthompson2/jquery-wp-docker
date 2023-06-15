@@ -1,23 +1,50 @@
 version: '3.8'
 services:
   jquerysite:
+    depends_on:
+      - jquerydb
     build:
       context: .
       dockerfile: Dockerfile
     container_name: jquerysite
     stdin_open: true
     tty: true
+    env_file:
+      - .env
+    environment:
+      - WORDPRESS_DB_HOST=jquerydb:3306
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=$MYSQL_DATABASE
     volumes:
       - ./WordPress:/var/www/html
-      # - ./jquery-wp-content:/var/www/html/jquery-wp-content
+      - ./jquery-wp-content:/var/www/html/jquery-wp-content
+      - ./wp-config.php:/var/www/html/wp-config.php
+      - ./ssl:/etc/apache2/ssl
+      - ./apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
     ports:
       - "80:80"
       - "443:443"
+    networks:
+      - jquerynet
+
   jquerydb:
     image: mysql
     container_name: jquerydb
-    restart: always
+    restart: unless-stopped
     env_file:
-      - mysql.env
+      - .env
+    volumes: 
+      - jquerydbdata:/var/lib/mysql
+    command: '--default-authentication-plugin=mysql_native_password'
     ports:
       - "3306:3306"
+    networks:
+      - jquerynet
+
+volumes:
+  jquerydbdata:
+
+networks:
+  jquerynet:
+    driver: bridge

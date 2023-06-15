@@ -1,0 +1,73 @@
+<?php
+/*
+ * The base configuration of the WordPress jQuery.com setup.
+ */
+
+/*
+ * jQuery.com settings
+ */
+
+define( 'JQUERY_STAGING', true );
+define( 'JQUERY_STAGING_PREFIX', 'local.' );
+
+// For https://contribute.jquery.org/CLA/status/
+// define( 'JQUERY_CLA_SERVER_URL', '');
+
+// WordPress debugging mode (enables PHP E_NOTICE and WordPress notices)
+define( 'WP_DEBUG', (bool) JQUERY_STAGING );
+
+/*
+ * Database Settings
+ */
+
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define('DB_NAME', getenv('WORDPRESS_DB_NAME'));
+
+/** MySQL database username */
+define('DB_USER', getenv('WORDPRESS_DB_USER'));
+
+/** MySQL database password */
+define('DB_PASSWORD', getenv('WORDPRESS_DB_PASSWORD'));
+
+/** MySQL hostname */
+define('DB_HOST', getenv('WORDPRESS_DB_HOST'));
+
+/** Database Charset to use in creating database tables. */
+define('DB_CHARSET', 'utf8');
+
+/** The Database Collate type. Don't change this if in doubt. */
+define('DB_COLLATE', '');
+
+/*
+ * Authentication Unique Keys and Salts.
+ *
+ * Change these to different unique phrases!
+ * Use https://api.wordpress.org/secret-key/1.1/salt/
+ */
+define('AUTH_KEY',         'put your unique phrase here');
+define('SECURE_AUTH_KEY',  'put your unique phrase here');
+define('LOGGED_IN_KEY',    'put your unique phrase here');
+define('NONCE_KEY',        'put your unique phrase here');
+define('AUTH_SALT',        'put your unique phrase here');
+define('SECURE_AUTH_SALT', 'put your unique phrase here');
+define('LOGGED_IN_SALT',   'put your unique phrase here');
+define('NONCE_SALT',       'put your unique phrase here');
+
+/*
+ * WordPress Database Table prefix.
+ */
+$table_prefix  = 'wp_';
+
+
+/* That's all, stop editing! Happy blogging. */
+
+/** Absolute path to the WordPress directory. */
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(__FILE__) . '/');
+
+/** jQuery.com configuration file */
+require( dirname( __FILE__ ) . '/jquery-wp-content/config.php' );
+
+/** Sets up WordPress vars and included files. */
+require_once(ABSPATH . 'wp-settings.php');
