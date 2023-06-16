@@ -7,13 +7,13 @@ This repo has the necessary setup for running [jquery-wp-content](https://github
 1. Clone this repo and its submodules
 
 ```sh
-$ git clone --recursive git@github.com:jquery/jquery-wp-docker.git
+git clone --recursive git@github.com:jquery/jquery-wp-docker.git
 ```
 
 2. Copy the wp-config-sample.php file to wp-config.php
 
 ```sh
-$ cp wp-config-sample.php wp-config.php
+cp wp-config-sample.php wp-config.php
 ```
 
 3. Edit the wp-config.php file and set unique keys and salts using https://api.wordpress.org/secret-key/1.1/salt/. Do NOT change the `DB_` defines.
@@ -36,13 +36,13 @@ MYSQL_PASSWORD=your_database_password
 5. Optionally, add local SSL certs to the `ssl` directory. If you don't have any, you can generate them using [mkcert](https://github.com/FiloSottile/mkcert). Run the following:
 
 ```sh
-$ mkcert -install
+mkcert -install
 ``` 
 
 Then, in the `ssl` directory, run:
 
 ```sh
-$ mkcert jquery.com *.jquery.com jqueryui.com *.jqueryui.com jquerymobile.com *.jquerymobile.com jquery.org *.jquery.org
+mkcert jquery.com *.jquery.com jqueryui.com *.jqueryui.com jquerymobile.com *.jquerymobile.com jquery.org *.jquery.org
 ```
 
 6. Run `docker compose up --build` to start the containers
