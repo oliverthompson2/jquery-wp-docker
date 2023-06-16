@@ -7,8 +7,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: jquerysite
-    stdin_open: true
-    tty: true
     env_file:
       - .env
     environment:
@@ -17,7 +15,6 @@ services:
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
       - WORDPRESS_DB_NAME=$MYSQL_DATABASE
     volumes:
-      - ./WordPress:/var/www/html
       - ./jquery-wp-content:/var/www/html/jquery-wp-content
       - ./wp-config.php:/var/www/html/wp-config.php
       - ./ssl:/etc/apache2/ssl
