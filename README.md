@@ -63,7 +63,19 @@ scp username@wp-01.ops.jquery.net:/path/to/wordpress.sql .
 docker exec -i jquerydb mysql -u YOUR_MYSQL_USER -p YOUR_MYSQL_DATABASE < wordpress.sql
 ```
 
-8. Visit http://local.jquery.com, or https://local.jquery.com if you created certs.
+8. A side-effect of loading data from production is that the `home` option is set. This means that the site will redirect to `jquery.com` instead of `local.jquery.com`. To fix this, set the `home` option in the `wp_options` table to `https://local.jquery.com`.
+
+```sh
+docker exec -it jquerydb mysql -u YOUR_MYSQL_USER -p YOUR_MYSQL_DATABASE
+```
+
+```sql
+UPDATE wp_options SET option_value = 'https://local.jquery.com' WHERE option_name = 'home';
+```
+
+This also applies to jqueryui.com, but not to the other sites.
+
+9. Visit http://local.jquery.com, or https://local.jquery.com if you created certs.
 
 ## Notes
 
