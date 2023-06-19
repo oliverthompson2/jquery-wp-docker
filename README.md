@@ -42,8 +42,10 @@ mkcert -install
 Then, in the `ssl` directory, run:
 
 ```sh
-mkcert jquery.com *.jquery.com jqueryui.com *.jqueryui.com jquerymobile.com *.jquerymobile.com jquery.org *.jquery.org
+mkcert local.jquery.com local.blog.jquery.com local.api.jquery.com local.plugins.jquery.com local.learn.jquery.com local.jqueryui.com local.blog.jqueryui.com local.api.jqueryui.com local.jquerymobile.com local.api.jquerymobile.com local.jquery.org local.events.jquery.org local.brand.jquery.org local.contribute.jquery.org local.meetings.jquery.org local.releases.jquery.com
 ```
+
+Wildcards don't work for multi-level subdomains. Add each site to the list of domains.
 
 6. Run `docker compose up --build` to start the containers.
 
