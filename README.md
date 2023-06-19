@@ -45,10 +45,23 @@ Then, in the `ssl` directory, run:
 mkcert jquery.com *.jquery.com jqueryui.com *.jqueryui.com jquerymobile.com *.jquerymobile.com jquery.org *.jquery.org
 ```
 
-6. Run `docker compose up --build` to start the containers
+6. Run `docker compose up --build` to start the containers.
 
-That's it! You should now be able to access the site at http://local.jquery.com, or https://local.jquery.com if you created certs.
+7. Fill the database with the latest data from production wordpress.
 
+```sh
+ssh wp-01.ops.jquery.net # Your SSH key must be on the server
+mysqldump -u jq_wordpress -p wordpress > wordpress.sql # Credentials are in the vault
+```
+
+Then, on your local machine, run:
+
+```sh
+scp username@wp-01.ops.jquery.net:/path/to/wordpress.sql .
+docker exec -i jquerydb mysql -u YOUR_MYSQL_USER -p YOUR_MYSQL_DATABASE < wordpress.sql
+```
+
+8. Visit http://local.jquery.com, or https://local.jquery.com if you created certs.
 
 ## Notes
 
@@ -59,5 +72,4 @@ You do not need to configure your `/etc/hosts` file for `local.*` because `jquer
 127.0.0.1 local.jqueryui.com local.api.jqueryui.com local.blog.jqueryui.com
 127.0.0.1 local.jquerymobile.com local.api.jquerymobile.com local.blog.jquerymobile.com
 127.0.0.1 local.jquery.org local.brand.jquery.org local.contribute.jquery.org local.events.jquery.org local.meetings.jquery.org
-127.0.0.1 local.sizzlejs.com
 ```

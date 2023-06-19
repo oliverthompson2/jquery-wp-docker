@@ -1,3 +1,4 @@
 wp-config.php
 ssl/*.pem
 .env
+*.sql
