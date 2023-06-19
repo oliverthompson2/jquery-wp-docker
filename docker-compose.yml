@@ -18,6 +18,7 @@ services:
       - ./jquery-wp-content:/var/www/html/jquery-wp-content
       - ./wp-config.php:/var/www/html/wp-config.php
       - ./ssl:/etc/apache2/ssl
+      - ./apache/.htaccess:/var/www/html/.htaccess
       - ./apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
     ports:
       - "80:80"
