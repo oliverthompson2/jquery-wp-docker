@@ -16,6 +16,9 @@ define( 'JQUERY_STAGING_PREFIX', 'local.' );
 // WordPress debugging mode (enables PHP E_NOTICE and WordPress notices)
 define( 'WP_DEBUG', (bool) JQUERY_STAGING );
 
+// Set the uploads directory so docker can write to it
+define( 'UPLOADS', 'wp-content/uploads' );
+
 /*
  * Database Settings
  */
