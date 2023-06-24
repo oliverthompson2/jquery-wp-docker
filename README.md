@@ -65,8 +65,11 @@ mysqldump -u jq_wordpress -p wordpress > wordpress.sql # Credentials are in the 
 Then, on your local machine, run:
 
 ```sh
-scp wp-01.ops.jquery.net:~/wordpress.sql . # This assumes your SQL dump is in your home directory on the server
-docker exec -i jquerydb mysql -u YOUR_MYSQL_USER -p YOUR_MYSQL_DATABASE < wordpress.sql
+# This assumes your SQL dump is in your home directory on the server
+scp wp-01.ops.jquery.net:~/wordpress.sql .
+# These are the same as what's in your .env file
+# Note there is no space between -p and the password
+docker exec -i jquerydb mysql -u YOUR_MYSQL_USER -pYOUR_MYSQL_PASSWORD YOUR_MYSQL_DATABASE < wordpress.sql
 ```
 
 8. Visit http://local.jquery.com, or https://local.jquery.com if you created certs.
