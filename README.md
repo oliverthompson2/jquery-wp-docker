@@ -65,7 +65,7 @@ mysqldump -u jq_wordpress -p wordpress > wordpress.sql # Credentials are in the 
 Then, on your local machine, run:
 
 ```sh
-scp username@wp-01.ops.jquery.net:/path/to/wordpress.sql .
+scp wp-01.ops.jquery.net:~/wordpress.sql . # This assumes your SQL dump is in your home directory on the server
 docker exec -i jquerydb mysql -u YOUR_MYSQL_USER -p YOUR_MYSQL_DATABASE < wordpress.sql
 ```
 
