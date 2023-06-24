@@ -27,6 +27,10 @@ define('SECURE_AUTH_KEY',  'put your unique phrase here');
 4. Copy .env.example to .env and edit the file to define database credentials
 
 ```sh
+cp .env.example .env
+```
+
+```sh
 MYSQL_DATABASE=your_database_name
 MYSQL_ROOT_PASSWORD=your_root_password
 MYSQL_USER=your_database_user_name
@@ -37,7 +41,7 @@ MYSQL_PASSWORD=your_database_password
 
 ```sh
 mkcert -install
-``` 
+```
 
 Then, in the `ssl` directory, run:
 
@@ -46,6 +50,8 @@ mkcert local.jquery.com local.blog.jquery.com local.api.jquery.com local.plugins
 ```
 
 Wildcards don't work for multi-level subdomains. Add each site to the list of domains.
+
+**Rename the created certs to `cert.pem` and `cert-key.pem`.**
 
 6. Run `docker compose up --build` to start the containers.
 
@@ -63,19 +69,7 @@ scp username@wp-01.ops.jquery.net:/path/to/wordpress.sql .
 docker exec -i jquerydb mysql -u YOUR_MYSQL_USER -p YOUR_MYSQL_DATABASE < wordpress.sql
 ```
 
-8. A side-effect of loading data from production is that the `home` option is set. This means that the site will redirect to `jquery.com` instead of `local.jquery.com`. To fix this, set the `home` option in the `wp_options` table to `https://local.jquery.com`.
-
-```sh
-docker exec -it jquerydb mysql -u YOUR_MYSQL_USER -p YOUR_MYSQL_DATABASE
-```
-
-```sql
-UPDATE wp_options SET option_value = 'https://local.jquery.com' WHERE option_name = 'home';
-```
-
-This also applies to jqueryui.com, but not to the other sites.
-
-9. Visit http://local.jquery.com, or https://local.jquery.com if you created certs.
+8. Visit http://local.jquery.com, or https://local.jquery.com if you created certs.
 
 ## Notes
 
