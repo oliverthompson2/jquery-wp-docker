@@ -8,7 +8,7 @@ RUN a2enmod ssl && a2enmod rewrite && \
   mkdir -p /etc/apache2/ssl && \
   mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
-ENV NODE_VERSION=18.16.0
+ENV NODE_VERSION=18.16.1
 RUN apt install -y curl
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 ENV NVM_DIR=/root/.nvm
