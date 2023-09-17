@@ -9,12 +9,12 @@
 
 define( 'JQUERY_STAGING', true );
 define( 'JQUERY_STAGING_PREFIX', 'local.' );
+$live_site = preg_replace( '/:\d+$/', '', strtolower( $_SERVER['HTTP_HOST'] ?? 'jquery.com' ) );
+$live_site = strtr( $live_site, [ JQUERY_STAGING_PREFIX => '' ] );
+define( 'JQUERY_LIVE_SITE', $live_site );
 
 // WordPress debugging mode (enables PHP E_NOTICE and WordPress notices)
 define( 'WP_DEBUG', (bool) JQUERY_STAGING );
-
-// Set the uploads directory so docker can write to it
-define( 'UPLOADS', 'wp-content/uploads' );
 
 /*
  * Database Settings
@@ -22,7 +22,7 @@ define( 'UPLOADS', 'wp-content/uploads' );
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', getenv('WORDPRESS_DB_NAME'));
+define('DB_NAME', 'wordpress_' . strtr( JQUERY_LIVE_SITE, [ '.' => '_' ]);
 
 /** MySQL database username */
 define('DB_USER', getenv('WORDPRESS_DB_USER'));
@@ -62,12 +62,5 @@ $table_prefix  = 'wp_';
 
 /* That's all, stop editing! Happy blogging. */
 
-/** Absolute path to the WordPress directory. */
-if ( !defined('ABSPATH') )
-	define('ABSPATH', dirname(__FILE__) . '/');
-
-/** jQuery.com configuration file */
-require( dirname( __FILE__ ) . '/jquery-wp-content/config.php' );
-
 /** Sets up WordPress vars and included files. */
-require_once(ABSPATH . 'wp-settings.php');
+require_once __DIR__ . '/wp-settings.php' ;

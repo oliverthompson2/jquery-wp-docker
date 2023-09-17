@@ -11,11 +11,10 @@ services:
       - .env
     environment:
       - WORDPRESS_DB_HOST=jquerydb:3306
-      - WORDPRESS_DB_USER=$MYSQL_USER
-      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
-      - WORDPRESS_DB_NAME=$MYSQL_DATABASE
+      - WORDPRESS_DB_USER=root
+      - WORDPRESS_DB_PASSWORD=$MYSQL_ROOT_PASSWORD
     volumes:
-      - ./jquery-wp-content:/var/www/html/jquery-wp-content
+      - ./jquery-wp-content:/var/www/html/wp-content
       - ./uploads:/var/www/html/wp-content/uploads:rw
       - ./wp-config.php:/var/www/html/wp-config.php
       - ./ssl:/etc/apache2/ssl
@@ -28,14 +27,13 @@ services:
       - jquerynet
 
   jquerydb:
-    image: mysql
+    image: mariadb:10.11
     container_name: jquerydb
     restart: unless-stopped
     env_file:
       - .env
     volumes:
       - jquerydbdata:/var/lib/mysql
-    command: '--default-authentication-plugin=mysql_native_password'
     ports:
       - "3306:3306"
     networks:

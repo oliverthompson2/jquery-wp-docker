@@ -30,46 +30,56 @@ define('SECURE_AUTH_KEY',  'put your unique phrase here');
 cp .env.example .env
 ```
 
-```sh
-MYSQL_DATABASE=your_database_name
-MYSQL_ROOT_PASSWORD=your_root_password
-MYSQL_USER=your_database_user_name
-MYSQL_PASSWORD=your_database_password
-```
+5. Optionally, add local SSL certs to the `ssl` directory.
 
-5. Optionally, add local SSL certs to the `ssl` directory. If you don't have any, you can generate them using [mkcert](https://github.com/FiloSottile/mkcert). Run the following:
+   * If you don't have any, you can generate them using [mkcert](https://github.com/FiloSottile/mkcert).
+     Run the following:
 
-```sh
-mkcert -install
-```
+     ```sh
+     mkcert -install
+     ```
 
-Then, in the `ssl` directory, run:
+   * Then, in the `ssl` directory, run:
+     ```sh
+     mkcert \
+     local.jquery.com \
+     local.api.jquery.com \
+     local.blog.jquery.com \
+     local.learn.jquery.com \
+     local.releases.jquery.com \
+     local.jqueryui.com \
+     local.api.jqueryui.com \
+     local.blog.jqueryui.com \
+     local.jquerymobile.com \
+     local.api.jquerymobile.com \
+     local.blog.jquerymobile.com \
+     local.jquery.org \
+     local.brand.jquery.org \
+     local.contribute.jquery.org \
+     local.meetings.jquery.org
+     ```
+     Wildcards don't work for multi-level subdomains. Add each site to the list of domains.
 
-```sh
-mkcert local.jquery.com local.blog.jquery.com local.api.jquery.com local.plugins.jquery.com local.learn.jquery.com local.jqueryui.com local.blog.jqueryui.com local.api.jqueryui.com local.jquerymobile.com local.api.jquerymobile.com local.jquery.org local.events.jquery.org local.brand.jquery.org local.contribute.jquery.org local.meetings.jquery.org local.releases.jquery.com
-```
-
-Wildcards don't work for multi-level subdomains. Add each site to the list of domains.
-
-**Rename the created certs to `cert.pem` and `cert-key.pem`.**
+   * Rename the created certs to `cert.pem` and `cert-key.pem`.
 
 6. Run `docker compose up --build` to start the containers.
 
-7. Fill the database with the latest data from production wordpress.
+7. Import the database from a production WordPress instance.
 
 ```sh
-ssh wp-01.ops.jquery.net # Your SSH key must be on the server
-mysqldump -u jq_wordpress -p wordpress > wordpress.sql # Credentials are in the vault
+# You need SSH admin access to this production server
+ssh wp-05.ops.jquery.net
+sudo -u tarsnap mysqldump --databases `sudo -u tarsnap mysql -B -N -e "SHOW DATABASES LIKE 'wordpress_%'"` > wordpress.sql
 ```
 
 Then, on your local machine, run:
 
 ```sh
-# This assumes your SQL dump is in your home directory on the server
-scp wp-01.ops.jquery.net:~/wordpress.sql .
-# These are the same as what's in your .env file
-# Note there is no space between -p and the password
-docker exec -i jquerydb mysql -u YOUR_MYSQL_USER -pYOUR_MYSQL_PASSWORD YOUR_MYSQL_DATABASE < wordpress.sql
+# Copy the SQL dump from your home directory on the server (as created by the previous command)
+scp wp-05.ops.jquery.net:~/wordpress.sql .
+# Docker root database password must match your .env file
+# NOTE: There must be no space between -p and the password!
+docker exec -i jquerydb mysql -u root -proot < wordpress.sql
 ```
 
 8. Visit http://local.jquery.com, or https://local.jquery.com if you created certs.
