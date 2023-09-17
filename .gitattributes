@@ -1,0 +1,9 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Normalize to LF for source code
+.htaccess eol=lf
+*.conf eol=lf
+*.php eol=lf
+*.yml eol=lf
+*.md eol=lf
