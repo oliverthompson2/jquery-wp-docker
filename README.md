@@ -2,7 +2,7 @@
 
 This repo has the necessary setup for running [jquery-wp-content](https://github.com/jquery/jquery-wp-content) in [WordPress](https://wordpress.com/) locally using [Docker](https://www.docker.com/).
 
-## Usage
+## Getting started
 
 1. Clone this repo and its submodules
 
@@ -82,7 +82,16 @@ scp wp-05.ops.jquery.net:~/wordpress.sql .
 docker exec -i jquerydb mysql -u root -proot < wordpress.sql
 ```
 
-8. Visit http://local.jquery.com, or https://local.jquery.com if you created certs.
+8. Visit http://local.api.jquery.com, or https://local.api.jquery.com if you created certs.
+
+## Updating
+
+To update your setup after pulling down changes, run:
+
+```
+docker compose down
+docker compose up --build -d
+```
 
 ## Notes
 
