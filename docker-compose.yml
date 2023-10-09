@@ -7,22 +7,18 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: jquerysite
-    env_file:
-      - .env
     environment:
       - WORDPRESS_DB_HOST=jquerydb:3306
       - WORDPRESS_DB_USER=root
-      - WORDPRESS_DB_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - WORDPRESS_DB_PASSWORD=root
     volumes:
       - ./jquery-wp-content:/var/www/html/wp-content
       - ./uploads:/var/www/html/wp-content/uploads:rw
       - ./wp-config.php:/var/www/html/wp-config.php
-      - ./ssl:/etc/apache2/ssl
       - ./apache/.htaccess:/var/www/html/.htaccess
       - ./apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
     ports:
-      - "80:80"
-      - "443:443"
+      - "${JQUERY_WP_HTTP_PORT:-9412}:80"
     networks:
       - jquerynet
 
@@ -30,12 +26,12 @@ services:
     image: mariadb:10.11
     container_name: jquerydb
     restart: unless-stopped
-    env_file:
-      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
     volumes:
       - jquerydbdata:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "${JQUERY_WP_MYSQL_PORT:-9414}:3306"
     networks:
       - jquerynet
 

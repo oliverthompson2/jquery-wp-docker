@@ -8,10 +8,9 @@
  */
 
 define( 'JQUERY_STAGING', true );
-define( 'JQUERY_STAGING_PREFIX', 'local.' );
-$live_site = preg_replace( '/:\d+$/', '', strtolower( $_SERVER['HTTP_HOST'] ?? 'jquery.com' ) );
-$live_site = strtr( $live_site, [ JQUERY_STAGING_PREFIX => '' ] );
-define( 'JQUERY_LIVE_SITE', $live_site );
+define( 'JQUERY_STAGING_FORMAT', 'local.%s:9412' );
+require_once __DIR__ . '/wp-content/sites.php' ;
+define( 'JQUERY_LIVE_SITE', jquery_site_extract( $_SERVER['HTTP_HOST'] ?? 'jquery.com' ) );
 
 // WordPress debugging mode (enables PHP E_NOTICE and WordPress notices)
 define( 'WP_DEBUG', (bool) JQUERY_STAGING );
