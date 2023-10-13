@@ -12,6 +12,7 @@ services:
       - WORDPRESS_DB_USER=root
       - WORDPRESS_DB_PASSWORD=root
     volumes:
+      - ./WordPress:/var/www/html:readonly
       - ./jquery-wp-content:/var/www/html/wp-content
       - ./uploads:/var/www/html/wp-content/uploads:rw
       - ./wp-config.php:/var/www/html/wp-config.php
