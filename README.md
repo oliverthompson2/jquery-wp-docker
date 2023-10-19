@@ -57,6 +57,14 @@ docker compose up --build -d
 
 ## Troubleshooting
 
+### MySQL
+
+To open a REPL to the database, run the `mysql` CLI in the jquerydb container. Make sure to include the `-i` and `-t` opens to connect your own shell to the shell in the container.
+
+```
+docker exec -it jquerydb mysql -u root -proot
+```
+
 ### Ports
 
 If you already use port 9412 on your host, you can create a `.env` file in this directory and set the following environment variable with a port number of your own choosing:
