@@ -64,7 +64,16 @@ $table_prefix  = 'wp_';
 /** Sets up WordPress vars and included files. */
 require_once __DIR__ . '/wp-settings.php' ;
 
-add_action( 'login_init', function () {
+// Auto-create an admin account for local development
+//
+// https://codex.wordpress.org/Plugin_API/Action_Reference
+//
+// The 'init' and 'wp_loaded' hooks would be great hooks for this purpose
+// if this code was in any other file (e.g. theme or plugin). Here in
+// wp-config.php, add_action is either undefined (before wp-settings.php),
+// or it's too later as those those hooks *just* fired at the end of
+// the wp-settings.php file. So, instead, just call it directly.
+function jquery_dev_autocreate_dev_admin() {
 	$username = 'dev';
 	$password = 'dev';
 	$email = 'dev@localhost';
@@ -76,4 +85,5 @@ add_action( 'login_init', function () {
 			'role' => 'administrator',
 		] );
 	}
-} );
+}
+jquery_dev_autocreate_dev_admin();
