@@ -6,65 +6,125 @@ This repo has the necessary setup for running [jquery-wp-content](https://github
 
 1. Clone this repo and its submodules
 
-```sh
-git clone --recursive git@github.com:jquery/jquery-wp-docker.git
-```
+    ```sh
+    git clone --recursive git@github.com:jquery/jquery-wp-docker.git
+    ```
 
-2. Copy the wp-config-sample.php file to wp-config.php
+1. Copy the wp-config-sample.php file to wp-config.php
 
-```sh
-cp wp-config-sample.php wp-config.php
-```
+    ```sh
+    cp wp-config-sample.php wp-config.php
+    ```
 
-3. Edit the wp-config.php file and set unique keys and salts using https://api.wordpress.org/secret-key/1.1/salt/. Do NOT change the `DB_` defines.
+1. Edit the wp-config.php file and set unique keys and salts using https://api.wordpress.org/secret-key/1.1/salt/. Do NOT change the `DB_` defines.
 
-```php
-define('AUTH_KEY',         'put your unique phrase here');
-define('SECURE_AUTH_KEY',  'put your unique phrase here');
-// etc.
-```
+    ```php
+    define('AUTH_KEY',         'put your unique phrase here');
+    define('SECURE_AUTH_KEY',  'put your unique phrase here');
+    // etc.
+    ```
 
-4. Copy .env.example to .env and edit the file to define database credentials
+1. Copy .env.example to .env and edit the file to define database credentials
 
-```sh
-cp .env.example .env
-```
+    ```sh
+    cp .env.example .env
+    ```
 
-5. Optionally, add local SSL certs to the `ssl` directory.
+1. Optionally, add local SSL certs to the `ssl` directory.
 
-   * If you don't have any, you can generate them using [mkcert](https://github.com/FiloSottile/mkcert).
-     Run the following:
+    * If you don't have any, you can generate them using [mkcert](https://github.com/FiloSottile/mkcert).
+      Run the following:
 
-     ```sh
-     mkcert -install
-     ```
+      ```sh
+      mkcert -install
+      ```
 
-   * Then, in the `ssl` directory, run:
-     ```sh
-     mkcert \
-     local.jquery.com \
-     local.api.jquery.com \
-     local.blog.jquery.com \
-     local.learn.jquery.com \
-     local.releases.jquery.com \
-     local.jqueryui.com \
-     local.api.jqueryui.com \
-     local.blog.jqueryui.com \
-     local.jquerymobile.com \
-     local.api.jquerymobile.com \
-     local.blog.jquerymobile.com \
-     local.jquery.org \
-     local.brand.jquery.org \
-     local.contribute.jquery.org \
-     local.meetings.jquery.org
-     ```
-     Wildcards don't work for multi-level subdomains. Add each site to the list of domains.
+    * Then, in the `ssl` directory, run:
 
-   * Rename the created certs to `cert.pem` and `cert-key.pem`.
+      ```sh
+      mkcert \
+      local.jquery.com \
+      local.api.jquery.com \
+      local.blog.jquery.com \
+      local.learn.jquery.com \
+      local.releases.jquery.com \
+      local.jqueryui.com \
+      local.api.jqueryui.com \
+      local.blog.jqueryui.com \
+      local.jquerymobile.com \
+      local.api.jquerymobile.com \
+      local.blog.jquerymobile.com \
+      local.jquery.org \
+      local.brand.jquery.org \
+      local.contribute.jquery.org \
+      local.meetings.jquery.org
+      ```
 
-6. Run `docker compose up --build` to start the containers.
+      Wildcards don't work for multi-level subdomains. Add each site to the list of domains.
 
-7. Import the database from a production WordPress instance.
+    * Rename the created certs to `cert.pem` and `cert-key.pem`.
+
+1. Run `docker compose up --build` to start the containers.
+
+1. Construct the database.
+
+    #### Outside contributors
+
+    You do not need to be on the jQuery Infrastructure Team to test jQuery websites. Each site can be deployed after installing wordpress locally, but the database for that site needs to be created first. The database name for each site is listed below:
+
+    | Site | Database Name |
+    |------|---------------|
+    | jquery.com | wordpress_jquery_com |
+    | api.jquery.com | wordpress_api_jquery_com |
+    | blog.jquery.com | wordpress_blog_jquery_com |
+    | learn.jquery.com | wordpress_learn_jquery_com |
+    | releases.jquery.com | wordpress_releases_jquery_com |
+    | jqueryui.com | wordpress_jqueryui_com |
+    | api.jqueryui.com | wordpress_api_jqueryui_com |
+    | blog.jqueryui.com | wordpress_blog_jqueryui_com |
+    | jquerymobile.com | wordpress_jquerymobile_com |
+    | api.jquerymobile.com | wordpress_api_jquerymobile_com |
+    | blog.jquerymobile.com | wordpress_blog_jquerymobile_com |
+    | jquery.org | wordpress_jquery_org |
+    | brand.jquery.org | wordpress_brand_jquery_org |
+    | contribute.jquery.org | wordpress_contribute_jquery_org |
+    | meetings.jquery.org | wordpress_meetings_jquery_org |
+
+    Select the corresponding database name from the table above for the site you wish to test and run the following command to create the database:
+
+    ```sh
+    'CREATE DATABASE IF NOT EXISTS wordpress_api_jquery_com;' | docker exec -i jquerydb mysql -u root -proot
+    ```
+
+    Then, finish installing WordPress by visiting the appropriate install URL for that site, such as http://local.api.jquery.com/wp-admin/install.php. Make sure the address begins with `local.`.
+
+    Fill in the form with the following information:
+
+    - Site Title: Any (e.g., "jQuery")
+    - Username: Any
+    - Password: Any
+    - Your Email: Any email address
+    - Search Engine Visibility: Uncheck
+
+    Click Install WordPress.
+
+    You should now be able to run `grunt deploy` from the corresponding jQuery site repo. Make sure the repo has a `config.json` with the following:
+
+    ```json
+    {
+      "url": "http://local.api.jquery.com",
+      "username": "dev",
+      "password": "dev"
+    }
+    ```
+
+    Replace the `url` with the site you are testing. The `dev` user is automatically created by this repo's wp-config.php.
+
+    After a successful deployment, visit http://local.api.jquery.com to see the site, or https://local.api.jquery.com if you created certs.
+
+    ---
+
+    #### Infrastructure team members only
 
     ```sh
     # You need SSH admin access to this production server
@@ -82,7 +142,7 @@ cp .env.example .env
     docker exec -i jquerydb mysql -u root -proot < wordpress.sql
     ```
 
-    Optionally, import the blog database as well. This uses a slightly different set of commands because our blogs have a shorter naming convention for their database than the doc sites. This stems from a time that the blogs were in fact native to the jquery.com site and database, and remain internally named as such.
+    Optionally, import the blog database as well. This uses a slightly different set of commands because our blogs have a shorter naming convention for their databases than the doc sites. This stems from a time that the blogs were in fact native to the jquery.com site and database, and remain internally named as such.
 
     ```sh
     ssh wpblogs-01.ops.jquery.net
@@ -106,7 +166,7 @@ cp .env.example .env
     docker exec -i jquerydb mysql -u root -proot --database wordpress_blog_jquerymobile_com < wordpress_blog_jquerymobile_com.sql;
     ```
 
-8. Visit http://local.api.jquery.com, or https://local.api.jquery.com if you created certs.
+    Then visit http://local.api.jquery.com, or https://local.api.jquery.com if you created certs.
 
 ## Updating
 
